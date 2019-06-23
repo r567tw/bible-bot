@@ -26,8 +26,9 @@ class WebhookController extends Controller
         $this->bot = new \LINE\LINEBot($this->httpClient, ['channelSecret' => $this->secret]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        dd($request);
         //獲取原始資訊
         $jsonString = file_get_contents('php://input');
         //轉成JSON

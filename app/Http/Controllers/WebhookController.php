@@ -12,14 +12,6 @@ class WebhookController extends Controller
     private $token = 'oquKUUZO1oX2p8LMV4V0fI1i8KmkYnhxf+jW6UxkNSk11qBcXW2kMS7X9e5fBl3GRjYZBpl3Q4qVGGP04cIuXnQzzKNO3+W+xo3EqGmqbbl/eE31uftzg6c2paeTekA4KXtELUEanhpIOze3RF7q3wdB04t89/1O/w1cDnyilFU=';
     private $secret = '8acbb1b97ad224edbb606c7af87fa7c0';
 
-    private $lineUserId = '';
-
-    private $lineMessage = '';
-
-    private $lineReplyToken = '';
-
-    private $lineType = '';
-    //
 
     public function __construct()
     {
@@ -31,25 +23,12 @@ class WebhookController extends Controller
     public function index(Request $request)
     {
         // Log::info($request->all());
-        $signature = $request->header(HTTPHeader::LINE_SIGNATURE);
 
-        if (empty($signature)) {
-            return abort(400);
-        }
-        $body = file_get_contents("php://input");
-        $events = $this->bot->parseEventRequest($body, $signature);
+        $events = $request['events'];
 
         foreach ($events as $event) {
-
-            if (!($event instanceof MessageEvent)) {
-                continue;
-            }
-
-            if (!($event instanceof TextMessage)) {
-                continue;
-            }
-
-            $resp = $bot->replyText($event->getReplyToken(), 'Hello Restart Bot');
+            // Log::info($event['replyToken']);
+            $resp = $this->bot->replyText($event['replyToken'], 'Hello Restart Bot');
         }
         return '';
     }

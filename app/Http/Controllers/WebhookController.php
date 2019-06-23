@@ -28,7 +28,7 @@ class WebhookController extends Controller
 
     public function index(Request $request)
     {
-        // dd($request);
+        dd($request);
         //獲取原始資訊
         $jsonString = file_get_contents('php://input');
         //轉成JSON

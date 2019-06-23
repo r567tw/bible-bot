@@ -30,15 +30,15 @@ class WebhookController extends Controller
 
     public function index(Request $request)
     {
-        $signature = $request->getHeader(HTTPHeader::LINE_SIGNATURE);
+        $signature = $request->header(HTTPHeader::LINE_SIGNATURE);
         if (empty($signature)) {
             return abort(400);
         }
 
-        $events = $this->bot->parseEventRequest($req->getBody(), $signature[0]);
+        $events = $this->bot->parseEventRequest($request->getContent(), $signature[0]);
 
         foreach ($events as $event) {
-            
+
             if (!($event instanceof MessageEvent)) {
                 continue;
             }

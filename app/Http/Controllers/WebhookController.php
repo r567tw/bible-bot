@@ -30,7 +30,7 @@ class WebhookController extends Controller
 
     public function index(Request $request)
     {
-        Log::info($request->all());
+        // Log::info($request->all());
         $signature = $request->header(HTTPHeader::LINE_SIGNATURE);
 
         if (empty($signature)) {

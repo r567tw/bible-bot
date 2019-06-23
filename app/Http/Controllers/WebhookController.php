@@ -35,7 +35,7 @@ class WebhookController extends Controller
             return abort(400);
         }
 
-        $events = $this->bot->parseEventRequest($request->getContent(), $signature[0]);
+        $events = $this->bot->parseEventRequest($request->getContent(), $signature);
 
         foreach ($events as $event) {
 

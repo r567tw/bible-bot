@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use LINE\LINEBot\Constant\HTTPHeader;
 
 class WebhookController extends Controller
 {
@@ -28,23 +30,25 @@ class WebhookController extends Controller
 
     public function index(Request $request)
     {
-        dd($request);
-        //獲取原始資訊
-        $jsonString = file_get_contents('php://input');
-        //轉成JSON
-        $jsonObj = json_decode($jsonString, true);
-
-        foreach ($jsonObj['events'] as $event) {
-            //Line ID
-            $this->lineUserId = $event['source']['userId'];
-            //message 類型，
-            $this->lineType = $event['message']['type'];
-            //消息文本
-            $this->lineMessage = $event['message']['text'];
-            //回覆token
-            $this->lineReplyToken = $event['replyToken'];
-
-            $this->bot->replyText($this->lineReplyToken, 'Hello world');
+        $signature = $request->getHeader(HTTPHeader::LINE_SIGNATURE);
+        if (empty($signature)) {
+            return abort(400);
         }
+
+        $events = $this->bot->parseEventRequest($req->getBody(), $signature[0]);
+
+        foreach ($events as $event) {
+            
+            if (!($event instanceof MessageEvent)) {
+                continue;
+            }
+
+            if (!($event instanceof TextMessage)) {
+                continue;
+            }
+
+            $resp = $bot->replyText($event->getReplyToken(), 'Hello Restart Bot');
+        }
+        return '';
     }
 }

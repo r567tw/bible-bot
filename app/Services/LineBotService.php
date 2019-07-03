@@ -2,6 +2,10 @@
 namespace App\Services;
 
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
+use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\ImageCarouselColumnTemplateBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\ImageCarouselTemplateBuilder;
 
 class LineBotService
 {
@@ -33,5 +37,14 @@ class LineBotService
             $content = new TextMessageBuilder($content);
         }
         return $this->lineBot->pushMessage($this->lineUserId, $content);
+    }
+
+    public function buildTemplateMessageBuilder(string $imagePath, string $directUri, string $label)
+    {
+        $aa = new UriTemplateActionBuilder($label, $directUri);
+        $bb =  new ImageCarouselColumnTemplateBuilder($imagePath, $aa);
+        $target = new ImageCarouselTemplateBuilder([$bb]);
+
+        return new TemplateMessageBuilder('Hello this is test message', $target);
     }
 }

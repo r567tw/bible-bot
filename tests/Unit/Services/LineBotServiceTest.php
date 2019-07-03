@@ -21,4 +21,17 @@ class LineBotServiceTest extends TestCase
 
         $this->assertEquals(200, $response->getHTTPStatus());
     }
+
+    public function testBuildTemplateMessageBuilder()
+    {
+        $lineService = new LineBotService(env('LINE_USER_ID'));
+        $target = $lineService->buildTemplateMessageBuilder(
+            'https://i.imgur.com/BlBH2HE.jpg',
+            'https://github.com/Tai-ch0802/php-crawler-chat-bot',
+            '自己玩的linebot'
+        );
+        $response =  $lineService->pushMessage($target);
+
+        $this->assertEquals(200, $response->getHTTPStatus());
+    }
 }

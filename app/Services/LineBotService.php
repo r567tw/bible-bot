@@ -31,20 +31,40 @@ class LineBotService
     }
 
 
+
+
+    public function buildImagesMessageBuilder(array $data, string $notificationText = 'Hello 這是今日的金句!')
+    {
+        $imageCarouselColumnTemplateBuilders = array_map(function ($d) {
+            return $this->buildImageCarouselColumnTemplateBuilder(
+                $d['imagePath'],
+                $d['directUri'],
+                $d['label']
+            );
+        }, $data);
+
+        $tempChunk = array_chunk($imageCarouselColumnTemplateBuilders, 5);
+
+        return array_map(function ($data) use ($notificationText) {
+            return new TemplateMessageBuilder(
+                $notificationText,
+                new ImageCarouselTemplateBuilder($data)
+            );
+        }, $tempChunk);
+    }
+
+    private function buildImageCarouselColumnTemplateBuilder(string $imagePath, string $directUri, string $label){
+        return new ImageCarouselColumnTemplateBuilder(
+            $imagePath,
+            new UriTemplateActionBuilder($label, $directUri)
+        );
+    }
+
     public function pushMessage($content)
     {
         if (is_string($content)) {
             $content = new TextMessageBuilder($content);
         }
         return $this->lineBot->pushMessage($this->lineUserId, $content);
-    }
-
-    public function buildTemplateMessageBuilder(string $imagePath, string $directUri, string $label)
-    {
-        $aa = new UriTemplateActionBuilder($label, $directUri);
-        $bb =  new ImageCarouselColumnTemplateBuilder($imagePath, $aa);
-        $target = new ImageCarouselTemplateBuilder([$bb]);
-
-        return new TemplateMessageBuilder('Hello this is test message', $target);
     }
 }

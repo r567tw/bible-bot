@@ -41,9 +41,10 @@ class WebhookController extends Controller
                 $response = $http->get($url);
                 $text = (string) trim($response->getBody());
                 $lineBotService->pushMessage($text);
+            }else{
+                $this->bot->replyText($event['replyToken'], '目前我暫時還學不會講話，請多給我一點時間！');
             }
 
-            $resp = $this->bot->replyText($event['replyToken'], '目前我暫時還學不會講話，請多給我一點時間！');
         }
         return '';
     }

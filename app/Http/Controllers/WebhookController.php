@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use LINE\LINEBot\Constant\HTTPHeader;
 use App\Services\LineBotService;
+use App\Services\DailyVerseService;
 
 class WebhookController extends Controller
 {
@@ -15,7 +16,7 @@ class WebhookController extends Controller
     private $service = '';
 
 
-    public function __construct()
+    public function __construct(DailyVerseService $dailyVerse)
     {
         $this->token = env('LINEBOT_TOKEN');
         $this->secret = env('LINEBOT_SECRET');
@@ -23,6 +24,7 @@ class WebhookController extends Controller
         $this->httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($this->token);
 
         $this->bot = new \LINE\LINEBot($this->httpClient, ['channelSecret' => $this->secret]);
+        $this->dailyVerse = $dailyVerse;
     }
 
     public function index(Request $request)
@@ -36,11 +38,7 @@ class WebhookController extends Controller
             if ($event['message']['type'] == 'text' && $event['message']['text'] == '今日金句'){
                 $userId = $event['source']['userId'];
                 $lineBotService = new LineBotService($userId);
-                $http = new \GuzzleHttp\Client;
-                $url = 'https://www.taiwanbible.com/blog/dailyverse.jsp';
-                $response = $http->get($url);
-                $text = (string) trim($response->getBody());
-                $lineBotService->pushMessage($text);
+                $lineBotService->pushMessage($this->dailyVerse->getDailyVerse());
             }else{
                 $this->bot->replyText($event['replyToken'], '目前我暫時還學不會講話，請多給我一點時間！');
             }

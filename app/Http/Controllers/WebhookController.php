@@ -7,16 +7,17 @@ use Illuminate\Support\Facades\Log;
 use LINE\LINEBot\Constant\HTTPHeader;
 use App\Services\LineBotService;
 use App\Services\DailyVerseService;
+use App\Services\WebhookResponseService;
 
 class WebhookController extends Controller
 {
 
     private $token = '';
     private $secret = '';
-    private $service = '';
 
 
-    public function __construct(DailyVerseService $dailyVerse)
+
+    public function __construct(DailyVerseService $dailyVerse,WebhookResponseService $responseService)
     {
         $this->token = env('LINEBOT_TOKEN');
         $this->secret = env('LINEBOT_SECRET');
@@ -25,6 +26,7 @@ class WebhookController extends Controller
 
         $this->bot = new \LINE\LINEBot($this->httpClient, ['channelSecret' => $this->secret]);
         $this->dailyVerse = $dailyVerse;
+        $this->responseService = $responseService;
     }
 
     public function index(Request $request)
@@ -35,14 +37,11 @@ class WebhookController extends Controller
 
         foreach ($events as $event) {
             // Log::info($event['replyToken']);
-            if ($event['message']['type'] == 'text' && $event['message']['text'] == '今日金句'){
-                $userId = $event['source']['userId'];
-                $lineBotService = new LineBotService($userId);
-                $lineBotService->pushMessage($this->dailyVerse->getDailyVerse());
-            }else{
-                $this->bot->replyText($event['replyToken'], '目前我暫時還學不會講話，請多給我一點時間！');
-            }
 
+            $this->bot->replyText(
+                $event['replyToken'],
+                $this->responseService->returnResponse($event)
+            );
         }
         return '';
     }

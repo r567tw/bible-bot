@@ -13,7 +13,7 @@ class PushDailyVerseCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'pushDailyVerse';
+    protected $signature = 'push:DailyVerse';
 
     /**
      * The console command description.
@@ -31,7 +31,6 @@ class PushDailyVerseCommand extends Command
     {
         parent::__construct();
         $this->service = $service;
-
     }
 
     /**

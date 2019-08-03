@@ -46,17 +46,21 @@ class WebhookResponseService
     private function tramsforTextMessage($message){
         //將訊息全形英數轉半形
         $message = mb_convert_kana($message,'a');
+
         return $message;
     }
 
     private function prepareDataForQueryBible($message){
         // return ['book'=>'創', 'chap' => '1', 'sec' => '1']
-        try {
-            $query = explode(',',substr($message, 10));
-        } catch (\Throwable $th) {
+        $query = explode(',',substr($message, 10));
+
+        if (count($query) != 3){
             return ['status'=> false];
         }
-        return ['status'=> true,'data'=>array_combine(['book','chap','sec'],$query)];
+
+        return ['status'=> true,
+                'data'  => array_combine(['book','chap','sec'],$query)
+        ];
     }
 
 

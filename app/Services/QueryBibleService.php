@@ -14,10 +14,10 @@ class QueryBibleService
     }
 
 
-    public function getData(Array $query)
+    public function getData(Array $data)
     {
-        if ($query['status']){
-            $input = $query['data'];
+        if ($data['status']){
+            $input = $data['data'];
             // input: ['book'=>'創', 'chap' => '1', 'sec' => '1']
             $input['gb'] = '0';
             $input['chineses'] = $input['book'];

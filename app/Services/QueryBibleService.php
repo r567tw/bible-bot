@@ -16,25 +16,30 @@ class QueryBibleService
 
     public function getData(Array $query)
     {
-        // input: ['book'=>'創', 'chap' => '1', 'sec' => '1']
-        $query['gb'] = '0';
-        $query['chineses'] = $query['book'];
-        unset($query['book']);
+        if ($query['status']){
+            $input = $query['data'];
+            // input: ['book'=>'創', 'chap' => '1', 'sec' => '1']
+            $input['gb'] = '0';
+            $input['chineses'] = $input['book'];
+            unset($input['book']);
 
-        $response = $this->client->request(
-            'GET',
-            'http://bible.fhl.net/json/qb.php',
-            ['query'=> $query]
-        );
+            $response = $this->client->request(
+                'GET',
+                'http://bible.fhl.net/json/qb.php',
+                ['query'=> $input]
+            );
 
-        $text = json_decode($response->getBody());
+            $text = json_decode($response->getBody());
 
-        $content = '';
+            $content = '';
 
-        foreach ($text->record as $record) {
-            $content .= $record->bible_text;
+            foreach ($text->record as $record) {
+                $content .= $record->bible_text;
+            }
+
+            return $content;
+        }else{
+            return '此訊息在處理過程當中有錯誤';
         }
-
-        return $content;
     }
 }

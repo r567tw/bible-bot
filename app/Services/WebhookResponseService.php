@@ -51,9 +51,12 @@ class WebhookResponseService
 
     private function prepareDataForQueryBible($message){
         // return ['book'=>'創', 'chap' => '1', 'sec' => '1']
-
-        $query = explode(',',substr($message, 10));
-        return array_combine(['book','chap','sec'],$query);
+        try {
+            $query = explode(',',substr($message, 10));
+        } catch (\Throwable $th) {
+            return ['status'=> false];
+        }
+        return ['status'=> true,'data'=>array_combine(['book','chap','sec'],$query)];
     }
 
 

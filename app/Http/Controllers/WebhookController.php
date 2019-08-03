@@ -31,12 +31,12 @@ class WebhookController extends Controller
 
     public function index(Request $request)
     {
-        // Log::info($request->all());
+        Log::info("Request from Line");
+        Log::info($request->all());
 
         $events = $request['events'];
 
         foreach ($events as $event) {
-            // Log::info($event['replyToken']);
 
             $this->bot->replyText(
                 $event['replyToken'],

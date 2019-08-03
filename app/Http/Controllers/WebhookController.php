@@ -31,7 +31,7 @@ class WebhookController extends Controller
 
     public function index(Request $request)
     {
-        Log::info($request->all(),["context"=>"Request from Line"]);
+        Log::info("Request from Line",$request->all());
 
         $events = $request['events'];
 

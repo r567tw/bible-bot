@@ -11,7 +11,8 @@ class QueryBibleServiceTest extends TestCase
     {
         $service = new QueryBibleService(new Client());
 
-        $response = $service->getData(['book'=>'創','chap'=>'1','sec' => '1']);
+        $response = $service->getData(['status'=> true,'data'=>['book'=>'創','chap'=>'1','sec' => '1']]);
+
         $this->assertStringContainsString('起初，神創造天地。',$response);
     }
 }

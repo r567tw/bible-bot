@@ -31,8 +31,7 @@ class WebhookController extends Controller
 
     public function index(Request $request)
     {
-        Log::info("Request from Line");
-        Log::info($request->all());
+        Log::info($request->all(),["context"=>"Request from Line"]);
 
         $events = $request['events'];
 
@@ -40,9 +39,10 @@ class WebhookController extends Controller
 
             $this->bot->replyText(
                 $event['replyToken'],
-                $this->responseService->returnResponse($event)
+                $response = $this->responseService->returnResponse($event)
             );
         }
-        return '';
+
+        return $response;
     }
 }

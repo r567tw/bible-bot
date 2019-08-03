@@ -31,15 +31,22 @@ class WebhookResponseService
     }
 
     private function processTextMessage($event){
-        switch ($event['message']['text']) {
+        $message = $this->tramsforTextMessage($event['message']['text']);
+        switch ($message) {
             case '今日金句':
                 return $this->dailyVerse->getDailyVerse();
-            case Str::startsWith($event['message']['text'],'查聖經:'):
-                $query = $this->prepareDataForQueryBible($event['message']['text']);
+            case Str::startsWith($message,'查聖經:'):
+                $query = $this->prepareDataForQueryBible($message);
                 return $this->bibleService->getData($query);
             default:
                 return '目前我無法處理此訊息～請Developer 多花一點心力開發！';
         }
+    }
+
+    private function tramsforTextMessage($message){
+        //將訊息全形英數轉半形
+        $message = mb_convert_kana($message,'a');
+        return $message;
     }
 
     private function prepareDataForQueryBible($message){
@@ -48,4 +55,6 @@ class WebhookResponseService
         $query = explode(',',substr($message, 10));
         return array_combine(['book','chap','sec'],$query);
     }
+
+
 }

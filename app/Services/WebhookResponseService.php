@@ -39,7 +39,7 @@ class WebhookResponseService
                 $query = $this->prepareDataForQueryBible($message);
                 return $this->bibleService->getData($query);
             default:
-                return '目前我無法處理此訊息～請Developer 多花一點心力開發！';
+                return '目前我無法處理此訊息～Developer 之後將開發更多新功能，盡請期待！';
         }
     }
 

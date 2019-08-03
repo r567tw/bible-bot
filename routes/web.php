@@ -21,13 +21,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('/webhook','WebhookController@index');
 
-Route::get('test',function(){
-    $http = new \GuzzleHttp\Client;
-    $url = 'https://www.taiwanbible.com/blog/dailyverse.jsp';
-    $response = $http->get($url);
-    $result = json_decode($response->getBody()->getContents(), true);
-    // return $result;
-    $text = (string) $response->getBody();
-    var_dump($text);
-    //throw new \Exception('a8');
-});
+Route::get('logs','\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')
+->name('logs')
+->middleware(['developer']);

@@ -18,8 +18,9 @@ class DailyVerseService
         $url = 'https://www.taiwanbible.com/blog/dailyverse.jsp';
 
         $response = $this->client->get($url);
-        $text = (string) trim($response->getBody());
+        $scripture = (string) trim($response->getBody());
 
-        return $text;
+        return $scripture;
     }
+
 }

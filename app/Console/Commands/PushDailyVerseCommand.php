@@ -40,7 +40,7 @@ class PushDailyVerseCommand extends Command
      */
     public function handle()
     {
-        $bot = new LineBotService(env('LINE_USER_ID'));
-        $bot->pushMessage($this->service->getDailyVerse());
+        $bot = new LineBotService();
+        $bot->pushMessage(env('LINE_USER_ID'),$this->service->getDailyVerse());
     }
 }

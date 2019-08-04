@@ -6,8 +6,6 @@ use App\Services\DailyVerseService;
 use App\Services\QueryBibleService;
 use Illuminate\Support\Str;
 
-use App\Transformers\Requests\WebhookRequestTransformer;
-
 class WebhookResponseService
 {
     private $client;

@@ -19,8 +19,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::post('/webhook','WebhookController@index');
+Route::post('/webhook', 'WebhookController@index');
 
-Route::get('logs','\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')
-->name('logs')
-->middleware(['developer']);
+Route::resource('users', 'UserDashBoardController');
+
+Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')
+    ->name('logs')
+    ->middleware(['developer']);

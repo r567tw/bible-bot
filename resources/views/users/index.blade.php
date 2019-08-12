@@ -9,7 +9,7 @@
 
                 <div class="card-body">
                     <p>
-                        <a class="btn btn-success" href="">Create</a>
+                        <a class="btn btn-success" href="{{ route('users.create') }}">Create</a>
                     </p>
                     <div class="table-responsive">
                         <table class="table">
@@ -30,8 +30,13 @@
                                     <td>{{ $user->admin }}</td>
                                     <td>{{ $user->developer }}</td>
                                     <td>
-                                        <a class="btn btn-info" href="">Edit</a>
-                                        <a class="btn btn-danger" href="">Delete</a>
+                                        <a class="btn btn-info" href="{{ route('users.edit',$user->id) }}">Edit</a>
+                                        <form style="display:inline" class="inline"
+                                            action="{{ route('users.destroy',$user->id) }}" method="POST">
+                                            {{ csrf_field() }}
+                                            @method("DELETE")
+                                            <input class="btn btn-danger" type="submit" value="Delete">
+                                        </form>
                                     </td>
                                 </tr>
                                 @endforeach

@@ -21,7 +21,7 @@ class WebhookController extends Controller
 
     public function index(Request $request,WebhookRequestTransformer $reqTransformer)
     {
-        Log::alert("Request from Line",$request->all());
+        Log::info("Request from Line",$request->all());
 
         foreach ($request['events'] as $event) {
 
